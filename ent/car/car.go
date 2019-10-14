@@ -13,9 +13,9 @@ const (
 	FieldRegisteredAt = "registered_at"
 
 	// Table holds the table name of the car in the database.
-	Table = "cars"
+	Table = "Users"
 	// OwnerTable is the table the holds the owner relation/edge.
-	OwnerTable = "cars"
+	OwnerTable = "Users"
 	// OwnerInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	OwnerInverseTable = "users"

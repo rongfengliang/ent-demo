@@ -11,6 +11,12 @@ type Car struct {
 	ent.Schema
 }
 
+func (Car) Config() ent.Config {
+	return ent.Config{
+		Table: "Users",
+	}
+}
+
 // Fields of the Car.
 func (Car) Fields() []ent.Field {
 	return []ent.Field{
