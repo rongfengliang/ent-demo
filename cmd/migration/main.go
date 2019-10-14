@@ -3,9 +3,9 @@ package main
 import (
     "log"
 
-    "github.com/rongfengliang/ent-demo/ent"
     "context"
     _ "github.com/go-sql-driver/mysql"
+    "github.com/rongfengliang/ent-demo/ent"
 )
 
 
