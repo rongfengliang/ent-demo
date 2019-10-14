@@ -9,6 +9,8 @@ import (
 	"math"
 
 	"github.com/facebookincubator/ent/dialect/sql"
+	"github.com/rongfengliang/ent-demo/ent/car"
+	"github.com/rongfengliang/ent-demo/ent/group"
 	"github.com/rongfengliang/ent-demo/ent/predicate"
 	"github.com/rongfengliang/ent-demo/ent/user"
 )
@@ -47,6 +49,37 @@ func (uq *UserQuery) Offset(offset int) *UserQuery {
 func (uq *UserQuery) Order(o ...Order) *UserQuery {
 	uq.order = append(uq.order, o...)
 	return uq
+}
+
+// QueryCars chains the current query on the cars edge.
+func (uq *UserQuery) QueryCars() *CarQuery {
+	query := &CarQuery{config: uq.config}
+	t1 := sql.Table(car.Table)
+	t2 := uq.sqlQuery()
+	t2.Select(t2.C(user.FieldID))
+	query.sql = sql.Select().
+		From(t1).
+		Join(t2).
+		On(t1.C(user.CarsColumn), t2.C(user.FieldID))
+	return query
+}
+
+// QueryGroups chains the current query on the groups edge.
+func (uq *UserQuery) QueryGroups() *GroupQuery {
+	query := &GroupQuery{config: uq.config}
+	t1 := sql.Table(group.Table)
+	t2 := uq.sqlQuery()
+	t2.Select(t2.C(user.FieldID))
+	t3 := sql.Table(user.GroupsTable)
+	t4 := sql.Select(t3.C(user.GroupsPrimaryKey[0])).
+		From(t3).
+		Join(t2).
+		On(t3.C(user.GroupsPrimaryKey[1]), t2.C(user.FieldID))
+	query.sql = sql.Select().
+		From(t1).
+		Join(t4).
+		On(t1.C(group.FieldID), t4.C(user.GroupsPrimaryKey[0]))
+	return query
 }
 
 // First returns the first User entity in the query. Returns *ErrNotFound when no user was found.

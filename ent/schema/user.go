@@ -2,6 +2,7 @@ package schema
 
 import (
 	"github.com/facebookincubator/ent"
+	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
 )
 
@@ -13,14 +14,18 @@ type User struct {
 // Fields of the User.
 func (User) Fields() []ent.Field {
 	return []ent.Field{
-        field.Int("age").
-            Positive(),
-        field.String("name").
-            Default("unknown"),
-    }
+		field.Int("age").
+			Positive(),
+		field.String("name").
+			Default("unknown"),
+	}
 }
 
 // Edges of the User.
 func (User) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("cars", Car.Type),
+		edge.From("groups", Group.Type).
+			Ref("users"),
+	}
 }
