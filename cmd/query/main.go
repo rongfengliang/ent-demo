@@ -3,12 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/rongfengliang/ent-demo/ent"
 	"github.com/rongfengliang/ent-demo/ent/user"
-	"log"
 )
 
-func main()  {
+func main() {
 
 	client, err := ent.Open("mysql", "root:dalongrong@tcp(127.0.0.1)/gogs")
 	if err != nil {
@@ -16,10 +18,10 @@ func main()  {
 	}
 	defer client.Close()
 	ctx := context.Background()
-	QueryUser(ctx, client)
+	queryUser(ctx, client)
 }
 
-func QueryUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
+func queryUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
 	u, err := client.User.
 		Query().
 		Where(user.ID(1)).
